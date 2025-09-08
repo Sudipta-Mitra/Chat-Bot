@@ -1,0 +1,29 @@
+from langchain_groq import ChatGroq
+from dotenv import load_dotenv
+from langchain_core.prompts import PromptTemplate
+from langchain_core.messages import SystemMessage,AIMessage,HumanMessage
+import streamlit as st
+
+# Load environment variables
+load_dotenv()
+
+# Initialize LLM
+llm = ChatGroq(
+    model="llama-3.3-70b-versatile",
+    temperature=0
+)
+
+
+chat_history=[]
+
+
+while True:
+    prompt = input('You: ')
+    chat_history.append(HumanMessage(content=prompt))
+    response = llm.invoke(chat_history)
+    chat_history.append(AIMessage(content=response.content))
+    if prompt == 'exit':
+        break
+    print('AI: ', response.content)
+
+print(chat_history)
